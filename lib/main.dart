@@ -120,6 +120,19 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  //Rest api test
+  Future<void> postAddRegistedUser() async {
+    try {
+      final restOperation = Amplify.API.post('addRegistedUser',
+          body: HttpPayload.json({'userId': '111222', 'username': 'fff'}));
+      final response = await restOperation.response;
+      print('GET call succeeded');
+      print(response.decodeBody());
+    } on ApiException catch (e) {
+      print('GET call failed: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -165,6 +178,11 @@ class _MyAppState extends State<MyApp> {
                   postTodo();
                 },
                 child: const Text('Rest API Test')),
+            OutlinedButton(
+                onPressed: () {
+                  postAddRegistedUser();
+                },
+                child: const Text('addUser')),
           ],
         )
       ],

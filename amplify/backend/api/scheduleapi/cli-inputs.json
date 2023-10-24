@@ -10,6 +10,16 @@
           "read"
         ]
       }
+    },
+    "/addRegistedUser": {
+      "name": "/addRegistedUser",
+      "lambdaFunction": "addRegistedUser",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create"
+        ]
+      }
     }
   }
 }

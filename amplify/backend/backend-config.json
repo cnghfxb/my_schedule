@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "sayHello"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "addRegistedUser"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -42,6 +50,25 @@
     }
   },
   "function": {
+    "addRegistedUser": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "scheduleDB"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sayHello": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -49,6 +76,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_addRegistedUser_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addRegistedUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_addRegistedUser_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addRegistedUser"
+        }
+      ]
+    },
     "AMPLIFY_function_sayHello_deploymentBucketName": {
       "usedBy": [
         {

@@ -1,0 +1,15 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-myschedule-staging-152648-authRole",
+      "UnauthRoleArn": "arn:aws:iam::622090529622:role/amplify-myschedule-staging-152648-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::622090529622:role/amplify-myschedule-staging-152648-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-myschedule-staging-152648-deployment",
+      "UnauthRoleName": "amplify-myschedule-staging-152648-unauthRole",
+      "StackName": "amplify-myschedule-staging-152648",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:622090529622:stack/amplify-myschedule-staging-152648/bf97d350-7281-11ee-8008-0a5a4ab5f0af",
+      "AmplifyAppId": "d5ipnnfsyfb1z"
+    }
+  }
+}

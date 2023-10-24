@@ -1,0 +1,26 @@
+{
+  "resourceName": "scheduleDB",
+  "tableName": "user",
+  "partitionKey": {
+    "fieldName": "userId",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "mailAddress",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "username-index",
+      "partitionKey": {
+        "fieldName": "username",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "phone",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

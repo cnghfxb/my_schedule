@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "paths": {
+    "/sayHello": {
+      "name": "/sayHello",
+      "lambdaFunction": "sayHello",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
+      }
+    }
+  }
+}

@@ -15,8 +15,11 @@
       "name": "/addRegistedUser",
       "lambdaFunction": "addRegistedUser",
       "permissions": {
-        "setting": "private",
+        "setting": "protected",
         "auth": [
+          "create"
+        ],
+        "guest": [
           "create"
         ]
       }

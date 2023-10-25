@@ -54,13 +54,17 @@
       "build": true,
       "dependsOn": [
         {
-          "attributeEnvMap": {
-            "Arn": "TABLE_ARN",
-            "Name": "TABLE_NAME"
-          },
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "myschedulef1ca4816"
+        },
+        {
           "attributes": [
             "Name",
-            "Arn"
+            "Arn",
+            "StreamArn"
           ],
           "category": "storage",
           "resourceName": "scheduleDB"

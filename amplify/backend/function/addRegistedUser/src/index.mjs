@@ -4,20 +4,24 @@ import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-exports.handler = async (event, context) => {
-  console.log(`EVENT: ${JSON.stringify(event)}`);
-  console.log(context)
+export const handler = async (event) => {
+  //console.log(`EVENT: ${JSON.stringify(event)}`);
+  const body = JSON.parse(event.body)
   const command = new PutCommand({
-    TableName: "user",
+    TableName: "user-staging",
     Item: {
-      userId: "fxb",
-      username: 'fanxuebin',
-      mailAddress: '222@qq.com',
-      phone:'1112e31232'
+      userId: body.userId,
+      username: body.username,
+      mailAddress: body.mailAddress
     },
   });
   try {
     await docClient.send(command);
+      const response = {
+    statusCode: 200,
+    body: JSON.stringify('Hello from Lambda!'),
+  };
+  return response;
   } catch (err) {
     console.log(err);
     throw err;

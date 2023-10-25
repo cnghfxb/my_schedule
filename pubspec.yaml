@@ -26,6 +26,7 @@ dependencies:
   amplify_auth_cognito: ^1.0.0
   amplify_authenticator: ^1.0.0
   amplify_api: ^1.0.0
+  getwidget: ^2.0.4
 
 
   # The following adds the Cupertino Icons font to your application.

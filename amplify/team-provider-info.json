@@ -23,7 +23,7 @@
         },
         "addRegistedUser": {
           "deploymentBucketName": "amplify-myschedule-staging-152648-deployment",
-          "s3Key": "amplify-builds/addRegistedUser-6f4953744f32384a4d4c-build.zip"
+          "s3Key": "amplify-builds/addRegistedUser-6a613147773768357230-build.zip"
         }
       },
       "api": {

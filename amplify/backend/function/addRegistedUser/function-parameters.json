@@ -1,5 +1,16 @@
 {
-  "permissions": {},
+  "permissions": {
+    "auth": {
+      "myschedulef1ca4816": [
+        "create"
+      ]
+    },
+    "storage": {
+      "scheduleDB": [
+        "create"
+      ]
+    }
+  },
   "lambdaLayers": [],
   "secretNames": []
 }

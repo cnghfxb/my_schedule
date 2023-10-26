@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_schedule/main.dart';
+import 'package:my_schedule/views/Home.dart';
 import 'package:my_schedule/views/signIn.dart';
 import 'package:my_schedule/views/signUp.dart';
 

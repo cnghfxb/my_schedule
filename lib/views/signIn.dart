@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_schedule/main.dart';
 import 'package:my_schedule/utils/auth.dart';
 import 'package:my_schedule/utils/colorTheme.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:my_schedule/views/Home.dart';
 import 'package:my_schedule/views/signUp.dart';
 
 /// 注册界面

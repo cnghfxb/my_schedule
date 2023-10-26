@@ -3,7 +3,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:my_schedule/router/router.dart';
-import 'package:my_schedule/views/Home.dart';
+import 'package:my_schedule/views/content.dart';
 import 'amplifyconfiguration.dart';
 
 void main() async {
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue),
-      home: const Home(),
+      home: const Content(),
       initialRoute: '/',
       onGenerateRoute: onGenerateRoute,
     );

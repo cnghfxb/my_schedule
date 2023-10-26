@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_schedule/utils/auth.dart';
 import 'package:my_schedule/utils/colorTheme.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:my_schedule/views/Home.dart';
+import 'package:my_schedule/views/content.dart';
 import 'package:my_schedule/views/signUp.dart';
 
 /// 注册界面
@@ -45,17 +45,12 @@ class _SignInPageState extends State<SignInPage> {
 
   void goHomePage(BuildContext context) {
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-      return const Home();
+      return const Content();
     }), (route) => route == null);
   }
 
   @override
   Widget build(BuildContext context) {
-    getIsSignedIn().then((value) {
-      if (value) {
-        goHomePage(context);
-      }
-    });
     return Scaffold(
       body: getBody(),
       resizeToAvoidBottomInset: false,
@@ -66,6 +61,13 @@ class _SignInPageState extends State<SignInPage> {
     try {
       String username = _controllerUserName.text;
       String password = _controllerPassword.text;
+      if (username == '' || password == '') {
+        await GFToast.showToast(
+          '账号和密码不能为空',
+          context,
+        );
+        return;
+      }
       await signInUser(username, password);
       // ignore: use_build_context_synchronously
       goHomePage(context);

@@ -397,6 +397,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.1"
+  list_tile_more_customizable:
+    dependency: "direct main"
+    description:
+      name: list_tile_more_customizable
+      sha256: d3bf81704f1d39736759db05b05a5883afd633c13ba463d0ae3fb32a2e32abbb
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0"
   logging:
     dependency: transitive
     description:

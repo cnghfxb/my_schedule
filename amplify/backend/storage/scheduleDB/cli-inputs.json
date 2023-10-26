@@ -9,18 +9,6 @@
     "fieldName": "mailAddress",
     "fieldType": "string"
   },
-  "gsi": [
-    {
-      "name": "username-index",
-      "partitionKey": {
-        "fieldName": "username",
-        "fieldType": "string"
-      },
-      "sortKey": {
-        "fieldName": "phone",
-        "fieldType": "string"
-      }
-    }
-  ],
+  "gsi": [],
   "triggerFunctions": []
 }

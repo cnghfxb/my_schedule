@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "auth": {
+      "myschedulef1ca4816": [
+        "read"
+      ]
+    },
+    "storage": {
+      "scheduleDB": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "usernew": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

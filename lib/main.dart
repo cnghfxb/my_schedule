@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_api/amplify_api.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_schedule/router/router.dart';
 import 'package:my_schedule/views/content.dart';
 import 'amplifyconfiguration.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       home: const Content(),
       initialRoute: '/',
       onGenerateRoute: onGenerateRoute,
+      builder: EasyLoading.init(),
     );
   }
 }

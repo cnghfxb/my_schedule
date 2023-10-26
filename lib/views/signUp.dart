@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:my_schedule/main.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_schedule/utils/auth.dart';
 import 'package:my_schedule/utils/colorTheme.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:my_schedule/utils/throttle.dart';
 import 'package:my_schedule/views/signIn.dart';
 
 /// 注册界面
@@ -116,58 +117,53 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   //重新发送验证码
-  sendCode() async {
+  Future<void> sendCode() async {
     if (valueCheck('code') == false) {
       try {
         setState(() {
           sendCodeBtn = true;
         });
         _startTimer();
+        EasyLoading.show(
+            status: "Loading", maskType: EasyLoadingMaskType.black);
+        await deleteUser();
         final result = await signUpUser(
             username: _controllerUserName.text,
             password: _controllerPassword.text,
             email: _controllerEmail.text);
+        EasyLoading.dismiss();
         if (result == 'UsernameExistsException') {
           // ignore: use_build_context_synchronously
-          await GFToast.showToast(
-            '该用户已存在，不可重复注册哦！',
-            context,
-          );
+          EasyLoading.showError("该用户已存在，不可重复注册");
         } else {
           // ignore: use_build_context_synchronously
-          await GFToast.showToast(
-            '验证码已通过邮件发送，请注意查收。',
-            context,
-          );
+          EasyLoading.showInfo("验证码已通过邮件发送，请注意查收。");
           userId = result;
         }
       } catch (err) {
-        await GFToast.showToast(
-          '验证码发送失败。',
-          context,
-        );
+        EasyLoading.showError("验证码发送失败");
       }
     }
   }
 
-  submit(context) async {
+  Future<void> submit() async {
     if (valueCheck('regist') == false) {
       try {
+        EasyLoading.show(status: 'loading');
         final restOperation = Amplify.API.post('addRegistedUser',
             body: HttpPayload.json({
               'userId': userId,
               'username': _controllerUserName.text,
               'mailAddress': _controllerEmail.text
             }));
-        final response = await restOperation.response;
-        print(response.decodeBody());
+        await restOperation.response;
+
         await confirmUser(
             username: _controllerUserName.text,
             confirmationCode: _controllerCode.text);
-        await GFToast.showToast(
-          '注册成功，正在返回登录页',
-          context,
-        );
+        EasyLoading.dismiss();
+        EasyLoading.showSuccess("注册成功");
+        // ignore: use_build_context_synchronously
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
           return const SignInPage();
@@ -175,10 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
         }), (route) => route == null);
       } catch (err) {
         print(err);
-        GFToast.showToast(
-          '注册失败',
-          context,
-        );
+        EasyLoading.showError("注册失败");
       }
     }
   }
@@ -309,7 +302,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 )
                               : GFButton(
                                   onPressed: () {
-                                    sendCode();
+                                    throttle(sendCode)();
                                   },
                                   text: "发送验证码",
                                   shape: GFButtonShape.square,
@@ -326,7 +319,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Expanded(
                       child: GFButton(
                     onPressed: () {
-                      submit(context);
+                      throttle(submit)();
                     },
                     text: "提交",
                     shape: GFButtonShape.square,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_schedule/utils/auth.dart';
 import 'package:my_schedule/utils/colorTheme.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:my_schedule/utils/throttle.dart';
 import 'package:my_schedule/views/content.dart';
 import 'package:my_schedule/views/signUp.dart';
 
@@ -59,6 +61,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> doSignIn() async {
     try {
+      //signOutCurrentUser();
       String username = _controllerUserName.text;
       String password = _controllerPassword.text;
       if (username == '' || password == '') {
@@ -68,12 +71,15 @@ class _SignInPageState extends State<SignInPage> {
         );
         return;
       }
+      EasyLoading.show(
+          status: 'loading...', maskType: EasyLoadingMaskType.black);
       await signInUser(username, password);
+      EasyLoading.dismiss();
       // ignore: use_build_context_synchronously
       goHomePage(context);
     } catch (err) {
-      print(err);
-      _showDialog();
+      EasyLoading.dismiss();
+      EasyLoading.showError("登录失败，请检查账号和密码");
     }
   }
 
@@ -161,7 +167,7 @@ class _SignInPageState extends State<SignInPage> {
               Expanded(
                 child: GFButton(
                   onPressed: () {
-                    doSignIn();
+                    throttle(doSignIn)();
                   },
                   text: "登录",
                   shape: GFButtonShape.square,

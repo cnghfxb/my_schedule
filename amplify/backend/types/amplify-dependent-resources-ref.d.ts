@@ -25,6 +25,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "getUsersInfo": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "sayHello": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -35,6 +42,16 @@ export type AmplifyDependentResourcesAttributes = {
   },
   "storage": {
     "scheduleDB": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "SortKeyName": "string",
+      "SortKeyType": "string",
+      "StreamArn": "string"
+    },
+    "usernew": {
       "Arn": "string",
       "Name": "string",
       "PartitionKeyName": "string",

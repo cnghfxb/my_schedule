@@ -17,6 +17,14 @@
           ],
           "category": "function",
           "resourceName": "addRegistedUser"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getUsersInfo"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -68,6 +76,47 @@
           ],
           "category": "storage",
           "resourceName": "scheduleDB"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "usernew"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getUsersInfo": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "myschedulef1ca4816"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "scheduleDB"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "usernew"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -96,6 +145,22 @@
         }
       ]
     },
+    "AMPLIFY_function_getUsersInfo_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUsersInfo"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUsersInfo_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUsersInfo"
+        }
+      ]
+    },
     "AMPLIFY_function_sayHello_deploymentBucketName": {
       "usedBy": [
         {
@@ -115,6 +180,10 @@
   },
   "storage": {
     "scheduleDB": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "usernew": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }

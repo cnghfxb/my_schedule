@@ -8,6 +8,9 @@
     "storage": {
       "scheduleDB": [
         "create"
+      ],
+      "usernew": [
+        "create"
       ]
     }
   },

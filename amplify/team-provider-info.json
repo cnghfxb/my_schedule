@@ -23,14 +23,19 @@
         },
         "addRegistedUser": {
           "deploymentBucketName": "amplify-myschedule-staging-152648-deployment",
-          "s3Key": "amplify-builds/addRegistedUser-6a613147773768357230-build.zip"
+          "s3Key": "amplify-builds/addRegistedUser-464a48757443374a6e41-build.zip"
+        },
+        "getUsersInfo": {
+          "deploymentBucketName": "amplify-myschedule-staging-152648-deployment",
+          "s3Key": "amplify-builds/getUsersInfo-475965356a7358536b64-build.zip"
         }
       },
       "api": {
         "scheduleapi": {}
       },
       "storage": {
-        "scheduleDB": {}
+        "scheduleDB": {},
+        "usernew": {}
       }
     }
   }

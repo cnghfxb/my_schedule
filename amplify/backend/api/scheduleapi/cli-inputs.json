@@ -23,6 +23,13 @@
           "create"
         ]
       }
+    },
+    "/getUserInfo": {
+      "name": "/getUserInfo",
+      "lambdaFunction": "getUsersInfo",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "resourceName": "usernew",
+  "tableName": "usernew",
+  "partitionKey": {
+    "fieldName": "userId",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "username",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "mailAddress-index",
+      "partitionKey": {
+        "fieldName": "mailAddress",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

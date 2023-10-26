@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:list_tile_more_customizable/list_tile_more_customizable.dart';
@@ -19,8 +22,13 @@ class Content extends StatefulWidget {
 
 class _Content extends State<Content> {
   int _currentIndex = 0;
+  bool isSignIn = false;
+  String userId = '';
+  String username = '';
+  String mailAddress = '';
+  String avatarUrl = '';
 
-  final List<Widget> _pages = const [
+  late final List<Widget> _pages = const [
     Home(),
     Share(),
     Message(),
@@ -28,17 +36,49 @@ class _Content extends State<Content> {
     User()
   ];
 
+  Future<void> _getUserInfo() async {
+    try {
+      final user = await Amplify.Auth.getCurrentUser();
+      print(user.userId);
+      final restOperation = Amplify.API.get(
+        'getUserInfo',
+        queryParameters: {'userId': user.userId, 'username': user.username},
+      );
+      final response = await restOperation.response;
+
+      final data = response.decodeBody();
+      Map<String, dynamic> userInfo = jsonDecode(data);
+      setState(() {
+        isSignIn = true;
+        userId = user.userId;
+        username = user.username;
+        mailAddress = userInfo['mailAddress'];
+        avatarUrl = userInfo['avatarUrl'];
+      });
+    } on ApiException catch (e) {
+      print('GET call failed: $e');
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
-    getIsSignedIn().then((value) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isUserSignedIn().then((value) {
       if (value != true) {
-        Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context) {
-          return const SignInPage();
-        }), (route) => route == null);
+        //    Navigator.pushAndRemoveUntil(context,
+        //       MaterialPageRoute(builder: (context) {
+        //      return const SignInPage();
+        //  }), (route) => route == null);
+      } else {
+        //获取当前登录用户信息
+        _getUserInfo();
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('日程'),
@@ -47,24 +87,36 @@ class _Content extends State<Content> {
       drawer: Drawer(
           child: Column(
         children: [
-          UserAccountsDrawerHeader(
-            accountName: const Text('搅屎鱼'),
-            accountEmail: const Text('814271018@qq.com'),
-            currentAccountPicture: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201409%2F29%2F20140929164844_rCLhV.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1698570916&t=2f592ece756f1331ed7f39c7ee5d9506")),
-            decoration: const BoxDecoration(
-                color: Colors.yellow,
-                image: DecorationImage(
-                    image: NetworkImage(
-                        "https://www.itying.com/images/flutter/2.png"),
-                    fit: BoxFit.cover)),
-            otherAccountsPictures: [
-              Image.network("https://www.itying.com/images/flutter/4.png"),
-              Image.network("https://www.itying.com/images/flutter/5.png"),
-              Image.network("https://www.itying.com/images/flutter/6.png")
-            ],
-          ),
+          isSignIn == true
+              ? UserAccountsDrawerHeader(
+                  accountName: Text(username),
+                  accountEmail: Text(mailAddress),
+                  currentAccountPicture:
+                      CircleAvatar(backgroundImage: NetworkImage(avatarUrl)),
+                  decoration: const BoxDecoration(
+                      color: Colors.yellow,
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              "https://www.itying.com/images/flutter/2.png"),
+                          fit: BoxFit.cover)),
+                  otherAccountsPictures: [
+                    Image.network(
+                        "https://www.itying.com/images/flutter/4.png"),
+                    Image.network(
+                        "https://www.itying.com/images/flutter/5.png"),
+                    Image.network("https://www.itying.com/images/flutter/6.png")
+                  ],
+                )
+              : const UserAccountsDrawerHeader(
+                  accountName: Text(''),
+                  accountEmail: Text(''),
+                  decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              "https://www.itying.com/images/flutter/2.png"),
+                          fit: BoxFit.cover)),
+                ),
           const ListTile(
               title: Text('个人中心'),
               leading: CircleAvatar(
@@ -78,26 +130,46 @@ class _Content extends State<Content> {
             ),
           ),
           const Divider(),
-          ListTileMoreCustomizable(
-            title: const Text(
-              "退出",
-              style: TextStyle(color: red),
-            ),
-            leading: const CircleAvatar(
-              backgroundColor: red,
-              child: Icon(
-                Icons.logout,
-                color: white,
-              ),
-            ),
-            onTap: (details) {
-              signOutCurrentUser();
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) {
-                return const SignInPage();
-              }), (route) => route == null);
-            },
-          )
+          isSignIn == true
+              ? ListTileMoreCustomizable(
+                  title: const Text(
+                    "退出",
+                    style: TextStyle(color: red),
+                  ),
+                  leading: const CircleAvatar(
+                    backgroundColor: red,
+                    child: Icon(
+                      Icons.logout,
+                      color: white,
+                    ),
+                  ),
+                  onTap: (details) {
+                    signOutCurrentUser();
+                    Navigator.pushAndRemoveUntil(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const SignInPage();
+                    }), (route) => route == null);
+                  },
+                )
+              : ListTileMoreCustomizable(
+                  title: const Text(
+                    "登录",
+                    style: TextStyle(color: red),
+                  ),
+                  leading: const CircleAvatar(
+                    backgroundColor: red,
+                    child: Icon(
+                      Icons.login,
+                      color: white,
+                    ),
+                  ),
+                  onTap: (details) {
+                    Navigator.pushAndRemoveUntil(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const SignInPage();
+                    }), (route) => route == null);
+                  },
+                )
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(

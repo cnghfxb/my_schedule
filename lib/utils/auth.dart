@@ -80,17 +80,16 @@ Future<void> signOutCurrentUser() async {
   }
 }
 
-//判断当前是否登录状态
-Future<bool> getIsSignedIn() async {
+Future<void> deleteUser() async {
   try {
-    final result = await Amplify.Auth.fetchAuthSession();
-    if (!result.isSignedIn) {
-      return false;
-    } else {
-      return true;
-    }
+    await Amplify.Auth.deleteUser();
+    safePrint('Delete user succeeded');
   } on AuthException catch (e) {
-    safePrint('Error retrieving auth session: ${e.message}');
-    return false;
+    safePrint('Delete user failed with error: $e');
   }
+}
+
+Future<bool> isUserSignedIn() async {
+  final result = await Amplify.Auth.fetchAuthSession();
+  return result.isSignedIn;
 }

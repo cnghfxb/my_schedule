@@ -16,33 +16,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "storagescheduleDBName": {
+    "storageuserName": {
       "Type": "String",
-      "Default": "storagescheduleDBName"
+      "Default": "storageuserName"
     },
-    "storagescheduleDBArn": {
+    "storageuserArn": {
       "Type": "String",
-      "Default": "storagescheduleDBArn"
+      "Default": "storageuserArn"
     },
-    "authmyschedulef1ca4816UserPoolId": {
+    "storageuserStreamArn": {
       "Type": "String",
-      "Default": "authmyschedulef1ca4816UserPoolId"
-    },
-    "storagescheduleDBStreamArn": {
-      "Type": "String",
-      "Default": "storagescheduleDBStreamArn"
-    },
-    "storageusernewName": {
-      "Type": "String",
-      "Default": "storageusernewName"
-    },
-    "storageusernewArn": {
-      "Type": "String",
-      "Default": "storageusernewArn"
-    },
-    "storageusernewStreamArn": {
-      "Type": "String",
-      "Default": "storageusernewStreamArn"
+      "Default": "storageuserStreamArn"
     }
   },
   "Conditions": {
@@ -98,26 +82,14 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "AUTH_MYSCHEDULEF1CA4816_USERPOOLID": {
-              "Ref": "authmyschedulef1ca4816UserPoolId"
+            "STORAGE_USER_NAME": {
+              "Ref": "storageuserName"
             },
-            "STORAGE_SCHEDULEDB_NAME": {
-              "Ref": "storagescheduleDBName"
+            "STORAGE_USER_ARN": {
+              "Ref": "storageuserArn"
             },
-            "STORAGE_SCHEDULEDB_ARN": {
-              "Ref": "storagescheduleDBArn"
-            },
-            "STORAGE_SCHEDULEDB_STREAMARN": {
-              "Ref": "storagescheduleDBStreamArn"
-            },
-            "STORAGE_USERNEW_NAME": {
-              "Ref": "storageusernewName"
-            },
-            "STORAGE_USERNEW_ARN": {
-              "Ref": "storageusernewArn"
-            },
-            "STORAGE_USERNEW_STREAMARN": {
-              "Ref": "storageusernewStreamArn"
+            "STORAGE_USER_STREAMARN": {
+              "Ref": "storageuserStreamArn"
             }
           }
         },
@@ -138,12 +110,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "myscheduleLambdaRoledc291ec5",
+            "myscheduleLambdaRolee5279d9f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "myscheduleLambdaRoledc291ec5",
+                  "myscheduleLambdaRolee5279d9f",
                   "-",
                   {
                     "Ref": "env"
@@ -209,34 +181,6 @@
                   }
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:DescribeTable",
-                "dynamodb:GetItem",
-                "dynamodb:Query",
-                "dynamodb:Scan",
-                "dynamodb:PutItem",
-                "dynamodb:UpdateItem",
-                "dynamodb:DeleteItem"
-              ],
-              "Resource": [
-                {
-                  "Ref": "storagescheduleDBArn"
-                },
-                {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      {
-                        "Ref": "storagescheduleDBArn"
-                      },
-                      "index/*"
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         }
@@ -260,117 +204,33 @@
             {
               "Effect": "Allow",
               "Action": [
-                "cognito-idp:ConfirmSignUp",
-                "cognito-idp:AdminCreateUser",
-                "cognito-idp:CreateUserImportJob",
-                "cognito-idp:AdminSetUserSettings",
-                "cognito-idp:AdminLinkProviderForUser",
-                "cognito-idp:CreateIdentityProvider",
-                "cognito-idp:AdminConfirmSignUp",
-                "cognito-idp:AdminDisableUser",
-                "cognito-idp:AdminRemoveUserFromGroup",
-                "cognito-idp:SetUserMFAPreference",
-                "cognito-idp:SetUICustomization",
-                "cognito-idp:SignUp",
-                "cognito-idp:VerifyUserAttribute",
-                "cognito-idp:SetRiskConfiguration",
-                "cognito-idp:StartUserImportJob",
-                "cognito-idp:AdminSetUserPassword",
-                "cognito-idp:AssociateSoftwareToken",
-                "cognito-idp:CreateResourceServer",
-                "cognito-idp:RespondToAuthChallenge",
-                "cognito-idp:CreateUserPoolClient",
-                "cognito-idp:AdminUserGlobalSignOut",
-                "cognito-idp:GlobalSignOut",
-                "cognito-idp:AddCustomAttributes",
-                "cognito-idp:CreateGroup",
-                "cognito-idp:CreateUserPool",
-                "cognito-idp:AdminForgetDevice",
-                "cognito-idp:AdminAddUserToGroup",
-                "cognito-idp:AdminRespondToAuthChallenge",
-                "cognito-idp:ForgetDevice",
-                "cognito-idp:CreateUserPoolDomain",
-                "cognito-idp:AdminEnableUser",
-                "cognito-idp:AdminUpdateDeviceStatus",
-                "cognito-idp:StopUserImportJob",
-                "cognito-idp:InitiateAuth",
-                "cognito-idp:AdminInitiateAuth",
-                "cognito-idp:AdminSetUserMFAPreference",
-                "cognito-idp:ConfirmForgotPassword",
-                "cognito-idp:SetUserSettings",
-                "cognito-idp:VerifySoftwareToken",
-                "cognito-idp:AdminDisableProviderForUser",
-                "cognito-idp:SetUserPoolMfaConfig",
-                "cognito-idp:ChangePassword",
-                "cognito-idp:ConfirmDevice",
-                "cognito-idp:AdminResetUserPassword",
-                "cognito-idp:ResendConfirmationCode"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:cognito-idp:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":userpool/",
-                      {
-                        "Ref": "authmyschedulef1ca4816UserPoolId"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
                 "dynamodb:Put*",
                 "dynamodb:Create*",
                 "dynamodb:BatchWriteItem",
-                "dynamodb:PartiQLInsert"
+                "dynamodb:PartiQLInsert",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:Delete*",
+                "dynamodb:PartiQLDelete"
               ],
               "Resource": [
                 {
-                  "Ref": "storagescheduleDBArn"
+                  "Ref": "storageuserArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storagescheduleDBArn"
-                      },
-                      "index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:PartiQLInsert"
-              ],
-              "Resource": [
-                {
-                  "Ref": "storageusernewArn"
-                },
-                {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      {
-                        "Ref": "storageusernewArn"
+                        "Ref": "storageuserArn"
                       },
                       "index/*"
                     ]

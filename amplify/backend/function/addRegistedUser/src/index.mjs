@@ -8,12 +8,12 @@ export const handler = async (event) => {
   //console.log(`EVENT: ${JSON.stringify(event)}`);
   const body = JSON.parse(event.body)
   const command = new PutCommand({
-    TableName: "usernew-staging",
+    TableName: "user-dev",
     Item: {
       userId: body.userId,
-      username: body.username,
       mailAddress: body.mailAddress,
-      avatarUrl: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201409%2F29%2F20140929164844_rCLhV.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1698570916&t=2f592ece756f1331ed7f39c7ee5d9506"'
+      nickname: body.nickname,
+      avatarUrl: 'https://gd-hbimg.huaban.com/9980f53d02800ebad0472f0fe1a6eed9a1ba699ec27f-mvUjPb_fw658webp'
     },
   });
   try {

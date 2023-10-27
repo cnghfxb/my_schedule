@@ -11,31 +11,53 @@
       "StackId": "arn:aws:cloudformation:ap-northeast-1:622090529622:stack/amplify-myschedule-staging-152648/bf97d350-7281-11ee-8008-0a5a4ab5f0af",
       "AmplifyAppId": "d5ipnnfsyfb1z",
       "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-myschedule-staging-152648-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    }
+  },
+  "tempo": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-myschedule-tempo-232658-authRole",
+      "UnauthRoleArn": "arn:aws:iam::622090529622:role/amplify-myschedule-tempo-232658-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::622090529622:role/amplify-myschedule-tempo-232658-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-myschedule-tempo-232658-deployment",
+      "UnauthRoleName": "amplify-myschedule-tempo-232658-unauthRole",
+      "StackName": "amplify-myschedule-tempo-232658",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:622090529622:stack/amplify-myschedule-tempo-232658/47462d80-74dd-11ee-b4fa-0eac15ad4095",
+      "AmplifyAppId": "d5ipnnfsyfb1z"
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-myschedule-dev-05626-authRole",
+      "UnauthRoleArn": "arn:aws:iam::622090529622:role/amplify-myschedule-dev-05626-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::622090529622:role/amplify-myschedule-dev-05626-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-myschedule-dev-05626-deployment",
+      "UnauthRoleName": "amplify-myschedule-dev-05626-unauthRole",
+      "StackName": "amplify-myschedule-dev-05626",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:622090529622:stack/amplify-myschedule-dev-05626/c6abbd90-74e9-11ee-a5ea-064d90bde3db",
+      "AmplifyAppId": "d2gqq7hw2qz7fg",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-myschedule-dev-05626-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
-        "myschedulef1ca4816": {}
+        "myschedule42642247": {}
       },
       "function": {
-        "sayHello": {
-          "deploymentBucketName": "amplify-myschedule-staging-152648-deployment",
-          "s3Key": "amplify-builds/sayHello-35493134486a72616f6c-build.zip"
+        "getUserInfo": {
+          "deploymentBucketName": "amplify-myschedule-dev-05626-deployment",
+          "s3Key": "amplify-builds/getUserInfo-2b30684354334734377a-build.zip"
         },
         "addRegistedUser": {
-          "deploymentBucketName": "amplify-myschedule-staging-152648-deployment",
-          "s3Key": "amplify-builds/addRegistedUser-464a48757443374a6e41-build.zip"
-        },
-        "getUsersInfo": {
-          "deploymentBucketName": "amplify-myschedule-staging-152648-deployment",
-          "s3Key": "amplify-builds/getUsersInfo-475965356a7358536b64-build.zip"
+          "deploymentBucketName": "amplify-myschedule-dev-05626-deployment",
+          "s3Key": "amplify-builds/addRegistedUser-30306853326279764169-build.zip"
         }
       },
       "api": {
-        "scheduleapi": {}
+        "schedule": {}
       },
       "storage": {
-        "scheduleDB": {},
-        "usernew": {}
+        "user": {}
       }
     }
   }

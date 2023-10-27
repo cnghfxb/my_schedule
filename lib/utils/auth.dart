@@ -1,17 +1,17 @@
 //注册
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-Future<String> signUpUser({
-  required String username,
-  required String password,
-  required String email,
-  String? phoneNumber,
-}) async {
+Future<String> signUpUser(
+    {required String username,
+    required String password,
+    required String email,
+    required String nickname}) async {
   try {
     final userAttributes = {
       AuthUserAttributeKey.email: email,
-      if (phoneNumber != null) AuthUserAttributeKey.phoneNumber: phoneNumber,
+      AuthUserAttributeKey.nickname: nickname
       // additional attributes as needed
     };
     final result = await Amplify.Auth.signUp(
@@ -29,13 +29,9 @@ Future<String> signUpUser({
     }
   } on AuthException catch (e) {
     safePrint('Error signing up user: ${e.message}');
-    if (e.message == 'User already exists') {
-      print('1111');
-      return 'UsernameExistsException';
-    } else {
-      print('222');
-      rethrow;
-    }
+    await EasyLoading.showError(e.message,
+        duration: const Duration(seconds: 3));
+    rethrow;
   }
 }
 

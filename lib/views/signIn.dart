@@ -1,3 +1,4 @@
+import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_schedule/utils/auth.dart';
@@ -25,26 +26,6 @@ class _SignInPageState extends State<SignInPage> {
   /// 是否隐藏密码
   bool isShowPassword = false;
 
-  _showDialog() async {
-    var result = await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('提示信息'),
-            content: const Text('账号或密码错误，登录失败。'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, 'ok');
-                  },
-                  child: const Text('确认'))
-            ],
-          );
-        });
-    print(result);
-  }
-
   void goHomePage(BuildContext context) {
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
       return const Content();
@@ -66,20 +47,22 @@ class _SignInPageState extends State<SignInPage> {
       String password = _controllerPassword.text;
       if (username == '' || password == '') {
         await GFToast.showToast(
-          '账号和密码不能为空',
+          '邮箱地址和密码不能为空',
           context,
         );
         return;
       }
       EasyLoading.show(
           status: 'loading...', maskType: EasyLoadingMaskType.black);
+      await signOutCurrentUser();
       await signInUser(username, password);
       EasyLoading.dismiss();
       // ignore: use_build_context_synchronously
       goHomePage(context);
     } catch (err) {
       EasyLoading.dismiss();
-      EasyLoading.showError("登录失败，请检查账号和密码");
+      EasyLoading.showError("登录失败，请检查邮箱地址和密码");
+      rethrow;
     }
   }
 
@@ -114,7 +97,7 @@ class _SignInPageState extends State<SignInPage> {
                     borderSide: BorderSide(color: primary)),
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: primary)),
-                hintText: "请输入用户名",
+                hintText: "请输入邮箱地址",
                 hintStyle: TextStyle(fontSize: 14)),
           ),
           const SizedBox(
@@ -178,8 +161,19 @@ class _SignInPageState extends State<SignInPage> {
             ],
           ),
           const SizedBox(
-            height: 30,
+            height: 20,
           ),
+          Center(
+            child: TextButton(
+              onPressed: () {
+                goHomePage(context);
+              },
+              child: const Text(
+                '游客登录',
+                style: TextStyle(color: link),
+              ),
+            ),
+          )
         ],
       ),
     ));

@@ -1,12 +1,8 @@
 {
-  "resourceName": "usernew",
-  "tableName": "usernew",
+  "resourceName": "user",
+  "tableName": "user",
   "partitionKey": {
     "fieldName": "userId",
-    "fieldType": "string"
-  },
-  "sortKey": {
-    "fieldName": "username",
     "fieldType": "string"
   },
   "gsi": [

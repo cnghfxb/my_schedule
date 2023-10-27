@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:my_schedule/views/content.dart';
+import 'package:my_schedule/views/individualCenter.dart';
 import 'package:my_schedule/views/signIn.dart';
 import 'package:my_schedule/views/signUp.dart';
 
 final Map<String, Function> routes = {
   '/': (context) => const Content(),
   '/sign-in': (context) => const SignInPage(),
-  '/sign-up': (context) => const SignUpPage()
+  '/sign-up': (context) => const SignUpPage(),
+  '/individual-center': (context) => const IndividualCenter()
 };
 
 var onGenerateRoute = (RouteSettings settings) {

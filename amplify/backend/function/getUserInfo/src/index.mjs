@@ -6,13 +6,11 @@ const docClient = DynamoDBDocumentClient.from(client);
 
 export const handler = async (event) => {
     const userId = event.queryStringParameters['userId']
-    const username = event.queryStringParameters['username']
 
     const command = new GetCommand({
-        TableName: "usernew-staging",
+        TableName: "user-dev",
         Key: {
-            userId,
-            username
+            userId
         }
       });
     const response = await docClient.send(command);

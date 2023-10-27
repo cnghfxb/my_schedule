@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "myschedulef1ca4816_identitypool_f1ca4816",
+    "identityPoolName": "myschedule42642247_identitypool_42642247",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "myschef1ca4816",
-    "userPoolName": "myschedulef1ca4816_userpool_f1ca4816",
+    "resourceNameTruncated": "mysche42642247",
+    "userPoolName": "myschedule42642247_userpool_42642247",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,19 +20,27 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "email",
+      "nickname"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [],
-    "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "myschef1ca4816_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [
+      "email"
+    ],
+    "userpoolClientReadAttributes": [
+      "email"
+    ],
+    "userpoolClientLambdaRole": "mysche42642247_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "f1ca4816",
-    "resourceName": "myschedulef1ca4816",
+    "sharedId": "42642247",
+    "resourceName": "myschedule42642247",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "manual",
+    "useDefault": "default",
+    "usernameAttributes": [
+      "email"
+    ],
     "triggers": {},
     "userPoolGroupList": [],
     "serviceName": "Cognito",
@@ -51,15 +59,6 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": [],
-    "userPoolGroups": false,
-    "adminQueries": false,
-    "thirdPartyAuth": false,
-    "authProviders": [],
-    "hostedUI": false,
-    "parentStack": {
-      "Ref": "AWS::StackId"
-    },
-    "permissions": []
+    "dependsOn": []
   }
 }

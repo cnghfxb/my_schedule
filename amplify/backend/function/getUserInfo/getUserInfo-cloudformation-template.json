@@ -15,6 +15,18 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "storageuserName": {
+      "Type": "String",
+      "Default": "storageuserName"
+    },
+    "storageuserArn": {
+      "Type": "String",
+      "Default": "storageuserArn"
+    },
+    "storageuserStreamArn": {
+      "Type": "String",
+      "Default": "storageuserStreamArn"
     }
   },
   "Conditions": {
@@ -47,12 +59,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "sayHello",
+            "getUserInfo",
             {
               "Fn::Join": [
                 "",
                 [
-                  "sayHello",
+                  "getUserInfo",
                   "-",
                   {
                     "Ref": "env"
@@ -69,6 +81,15 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "STORAGE_USER_NAME": {
+              "Ref": "storageuserName"
+            },
+            "STORAGE_USER_ARN": {
+              "Ref": "storageuserArn"
+            },
+            "STORAGE_USER_STREAMARN": {
+              "Ref": "storageuserStreamArn"
             }
           }
         },
@@ -89,12 +110,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "myscheduleLambdaRolec57d9f35",
+            "myscheduleLambdaRolee5dfc134",
             {
               "Fn::Join": [
                 "",
                 [
-                  "myscheduleLambdaRolec57d9f35",
+                  "myscheduleLambdaRolee5dfc134",
                   "-",
                   {
                     "Ref": "env"
@@ -160,6 +181,53 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storageuserArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storageuserArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

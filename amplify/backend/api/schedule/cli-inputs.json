@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "paths": {
+    "/getUserInfo": {
+      "name": "/getUserInfo",
+      "lambdaFunction": "getUserInfo",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/addRegistedUser": {
+      "name": "/addRegistedUser",
+      "lambdaFunction": "addRegistedUser",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}

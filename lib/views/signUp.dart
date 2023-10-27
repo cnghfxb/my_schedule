@@ -18,9 +18,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  /// 用户名编辑控制器
-  final TextEditingController _controllerUserName = TextEditingController();
-
   /// 邮箱编辑控制器
   final TextEditingController _controllerEmail = TextEditingController();
 
@@ -31,8 +28,11 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _controllerConfirmPassword =
       TextEditingController();
 
-  /// 确认密码编辑控制器
+  /// 验证码编辑控制器
   final TextEditingController _controllerCode = TextEditingController();
+
+  /// 昵称编辑控制器
+  final TextEditingController _controllerNickname = TextEditingController();
 
   /// 是否隐藏密码
   bool isShowPassword = false;
@@ -77,9 +77,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool valueCheck(String type) {
     var result = false;
-    if (_controllerUserName.text == '') {
+
+    if (_controllerNickname.text == '') {
       GFToast.showToast(
-        '请输入用户名',
+        '请输入昵称',
         context,
       );
       result = true;
@@ -128,20 +129,15 @@ class _SignUpPageState extends State<SignUpPage> {
             status: "Loading", maskType: EasyLoadingMaskType.black);
         await deleteUser();
         final result = await signUpUser(
-            username: _controllerUserName.text,
+            username: _controllerEmail.text,
             password: _controllerPassword.text,
-            email: _controllerEmail.text);
+            email: _controllerEmail.text,
+            nickname: _controllerNickname.text);
         EasyLoading.dismiss();
-        if (result == 'UsernameExistsException') {
-          // ignore: use_build_context_synchronously
-          EasyLoading.showError("该用户已存在，不可重复注册");
-        } else {
-          // ignore: use_build_context_synchronously
-          EasyLoading.showInfo("验证码已通过邮件发送，请注意查收。");
-          userId = result;
-        }
+        EasyLoading.showInfo("验证码已通过邮件发送，请注意查收。");
+        userId = result;
       } catch (err) {
-        EasyLoading.showError("验证码发送失败");
+        print(err);
       }
     }
   }
@@ -153,13 +149,13 @@ class _SignUpPageState extends State<SignUpPage> {
         final restOperation = Amplify.API.post('addRegistedUser',
             body: HttpPayload.json({
               'userId': userId,
-              'username': _controllerUserName.text,
+              'nickname': _controllerNickname.text,
               'mailAddress': _controllerEmail.text
             }));
         await restOperation.response;
 
         await confirmUser(
-            username: _controllerUserName.text,
+            username: _controllerEmail.text,
             confirmationCode: _controllerCode.text);
         EasyLoading.dismiss();
         EasyLoading.showSuccess("注册成功");
@@ -179,7 +175,8 @@ class _SignUpPageState extends State<SignUpPage> {
   ///
   Widget getBody() {
     return SafeArea(
-        child: Column(
+        child: SingleChildScrollView(
+            child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         InkWell(
@@ -212,13 +209,13 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               TextField(
                 cursorColor: primary,
-                controller: _controllerUserName,
+                controller: _controllerNickname,
                 decoration: const InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: primary)),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: primary)),
-                    hintText: "请输入用户名",
+                    hintText: "请输入昵称",
                     hintStyle: TextStyle(fontSize: 14)),
               ),
               const SizedBox(
@@ -332,12 +329,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         )
       ],
-    ));
-  }
-
-  signUP() {
-    String email = _controllerEmail.text;
-    String password = _controllerPassword.text;
-    print("$email, $password");
+    )));
   }
 }

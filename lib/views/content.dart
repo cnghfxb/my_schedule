@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:list_tile_more_customizable/list_tile_more_customizable.dart';
 import 'package:my_schedule/utils/auth.dart';
 import 'package:my_schedule/utils/colorTheme.dart';
@@ -24,40 +25,56 @@ class _Content extends State<Content> {
   int _currentIndex = 0;
   bool isSignIn = false;
   String userId = '';
-  String username = '';
+  String nickname = '';
   String mailAddress = '';
   String avatarUrl = '';
 
-  late final List<Widget> _pages = const [
-    Home(),
-    Share(),
-    Message(),
-    Setting(),
-    User()
+  final List<Widget> _pages = [
+    const Home(),
+    const Share(),
+    const Message(),
+    const Setting(),
+    const User(isSignedIn: false)
   ];
 
   Future<void> _getUserInfo() async {
     try {
       final user = await Amplify.Auth.getCurrentUser();
-      print(user.userId);
       final restOperation = Amplify.API.get(
         'getUserInfo',
-        queryParameters: {'userId': user.userId, 'username': user.username},
+        queryParameters: {'userId': user.userId},
       );
       final response = await restOperation.response;
-
       final data = response.decodeBody();
       Map<String, dynamic> userInfo = jsonDecode(data);
       setState(() {
         isSignIn = true;
         userId = user.userId;
-        username = user.username;
+        nickname = userInfo['nickname'];
         mailAddress = userInfo['mailAddress'];
         avatarUrl = userInfo['avatarUrl'];
+        _pages[4] = User(
+            isSignedIn: true,
+            nickname: nickname,
+            mailAddress: mailAddress,
+            avatarUrl: avatarUrl);
       });
     } on ApiException catch (e) {
       print('GET call failed: $e');
     }
+  }
+
+  Future<void> _signOutHandle() async {
+    EasyLoading.show(status: 'loading...');
+    await signOutCurrentUser();
+    setState(() {
+      isSignIn = false;
+      userId = '';
+      nickname = '';
+      mailAddress = '';
+      avatarUrl = '';
+    });
+    EasyLoading.dismiss();
   }
 
   @override
@@ -66,10 +83,11 @@ class _Content extends State<Content> {
     super.initState();
     isUserSignedIn().then((value) {
       if (value != true) {
-        //    Navigator.pushAndRemoveUntil(context,
-        //       MaterialPageRoute(builder: (context) {
-        //      return const SignInPage();
-        //  }), (route) => route == null);
+        setState(() {
+          _pages[4] = User(
+            isSignedIn: value,
+          );
+        });
       } else {
         //获取当前登录用户信息
         _getUserInfo();
@@ -82,6 +100,8 @@ class _Content extends State<Content> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('日程'),
+        elevation: 0,
+        backgroundColor: primary,
       ),
       body: _pages[_currentIndex],
       drawer: Drawer(
@@ -89,7 +109,7 @@ class _Content extends State<Content> {
         children: [
           isSignIn == true
               ? UserAccountsDrawerHeader(
-                  accountName: Text(username),
+                  accountName: Text(nickname),
                   accountEmail: Text(mailAddress),
                   currentAccountPicture:
                       CircleAvatar(backgroundImage: NetworkImage(avatarUrl)),
@@ -143,11 +163,12 @@ class _Content extends State<Content> {
                       color: white,
                     ),
                   ),
-                  onTap: (details) {
-                    signOutCurrentUser();
+                  onTap: (details) async {
+                    await _signOutHandle();
+                    // ignore: use_build_context_synchronously
                     Navigator.pushAndRemoveUntil(context,
                         MaterialPageRoute(builder: (context) {
-                      return const SignInPage();
+                      return const Content();
                     }), (route) => route == null);
                   },
                 )
@@ -173,7 +194,7 @@ class _Content extends State<Content> {
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
-        fixedColor: Colors.red, //选中的颜色
+        fixedColor: primary, //选中的颜色
         type: BottomNavigationBarType.fixed, //如果底部有4个或者4个以上的菜单的时候 就需要配置这个参数
         currentIndex: _currentIndex, //第几个菜单被选中
         onTap: (v) {
@@ -186,7 +207,7 @@ class _Content extends State<Content> {
           BottomNavigationBarItem(icon: Icon(Icons.category), label: '分类'),
           BottomNavigationBarItem(icon: Icon(Icons.category), label: '消息'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: '设置'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: '用户'),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: '我的'),
         ],
       ),
       floatingActionButton: Container(
@@ -197,7 +218,7 @@ class _Content extends State<Content> {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(30)),
         child: FloatingActionButton(
-          backgroundColor: _currentIndex == 2 ? Colors.red : Colors.blue,
+          backgroundColor: _currentIndex == 2 ? primary : Colors.blue,
           onPressed: () {
             setState(() {
               _currentIndex = 2;

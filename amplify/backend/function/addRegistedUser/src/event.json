@@ -1,11 +1,5 @@
 {
-  "httpMethod": "POST",
-  "path": "/item",
-  "queryStringParameters": {
-    "limit": "10"
-  },
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "body": "{\"msg\":\"Hello from the event.json body\"}"
+  "key1": "value1",
+  "key2": "value2",
+  "key3": "value3"
 }

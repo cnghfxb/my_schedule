@@ -42,7 +42,6 @@ class _IndividualCenterState extends State<IndividualCenter> {
 
       var _oldAvatarPictureKey = null;
       var _avatarPicktureUrl = null;
-
       if (userInfo['individualCenterPictureKey'] == '' ||
           userInfo['individualCenterPictureKey'] == null) {
         await getS3UrlPublic(defaultIndividualCenterPictureUrlKey)
@@ -87,7 +86,7 @@ class _IndividualCenterState extends State<IndividualCenter> {
   Future<void> _updateBackgroundImg() async {
     try {
       EasyLoading.show(status: 'loading');
-      final key = await uploadImage();
+      final key = await uploadImage('center_image');
       if (key != '') {
         final newUrl = await getS3UrlPublic(key);
         final restOperation = Amplify.API.post('updateUserInfo',
@@ -102,6 +101,7 @@ class _IndividualCenterState extends State<IndividualCenter> {
             defaultIndividualCenterPictureUrlKey) {
           await removeFile(key: oldIndividualCenterPictureKey!);
         }
+        EasyLoading.showSuccess('背景更新成功', duration: const Duration(seconds: 2));
         setState(() {
           individualCenterPictureUrl = newUrl;
           //将旧的S3 key替换成新的
@@ -118,7 +118,7 @@ class _IndividualCenterState extends State<IndividualCenter> {
   Future<void> _updateAvatar() async {
     try {
       EasyLoading.show(status: 'loading');
-      final key = await uploadImage();
+      final key = await uploadImage('user_avatar');
       if (key != '') {
         final newUrl = await getS3UrlPublic(key);
         final restOperation = Amplify.API.post('updateUserInfo',
@@ -129,7 +129,7 @@ class _IndividualCenterState extends State<IndividualCenter> {
         if (oldAvatarPictureKey != defaultAvatarUrlKey) {
           await removeFile(key: oldAvatarPictureKey!);
         }
-
+        EasyLoading.showSuccess('头像更新成功', duration: const Duration(seconds: 2));
         setState(() {
           avatarPicktureUrl = newUrl;
           //将旧的S3 key替换成新的

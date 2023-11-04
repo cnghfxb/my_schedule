@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:my_schedule/utils/uuid.dart';
 
 Future<String> getS3UrlPublic(String key) async {
   try {
@@ -16,7 +17,7 @@ Future<String> getS3UrlPublic(String key) async {
   }
 }
 
-Future<String> uploadImage() async {
+Future<String> uploadImage(String typeName) async {
   // Select a file from the device
   final result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
@@ -34,18 +35,18 @@ Future<String> uploadImage() async {
   // Upload file with its filename as the key
   final platformFile = result.files.single;
   try {
+    final key = '${typeName}_${platformFile.name}_${getUUid()}';
     final result = await Amplify.Storage.uploadFile(
       localFile: AWSFile.fromStream(
         platformFile.readStream!,
         size: platformFile.size,
       ),
-      key: platformFile.name,
+      key: key,
       onProgress: (progress) {
         safePrint('Fraction completed: ${progress.fractionCompleted}');
       },
     ).result;
-    EasyLoading.showSuccess('背景更新成功', duration: const Duration(seconds: 2));
-    return platformFile.name;
+    return key;
   } on StorageException catch (e) {
     safePrint('Error uploading file: $e');
     EasyLoading.showError('背景更新失败', duration: const Duration(seconds: 2));

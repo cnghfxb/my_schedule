@@ -31,9 +31,20 @@ export type AmplifyDependentResourcesAttributes = {
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
+    },
+    "updateUserInfo": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
     }
   },
   "storage": {
+    "myschedule": {
+      "BucketName": "string",
+      "Region": "string"
+    },
     "user": {
       "Arn": "string",
       "Name": "string",

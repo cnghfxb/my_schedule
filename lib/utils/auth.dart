@@ -21,7 +21,6 @@ Future<String> signUpUser(
         userAttributes: userAttributes,
       ),
     );
-    print(result);
     if (result.nextStep.signUpStep == AuthSignUpStep.confirmSignUp) {
       return result.userId as String;
     } else {

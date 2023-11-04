@@ -26,6 +26,25 @@
           "delete"
         ]
       }
+    },
+    "/updateUserInfo": {
+      "name": "/updateUserInfo",
+      "lambdaFunction": "updateUserInfo",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
     }
   }
 }

@@ -1,12 +1,12 @@
-import 'dart:convert';
-
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:list_tile_more_customizable/list_tile_more_customizable.dart';
+import 'package:my_schedule/utils/api.dart';
 import 'package:my_schedule/utils/auth.dart';
 import 'package:my_schedule/utils/colorTheme.dart';
+import 'package:my_schedule/utils/storage.dart';
 import 'package:my_schedule/views/Home.dart';
 import 'package:my_schedule/views/Setting.dart';
 import 'package:my_schedule/views/User.dart';
@@ -22,12 +22,17 @@ class Content extends StatefulWidget {
 }
 
 class _Content extends State<Content> {
+  final defaultAvatarUrlKey = 'default_avatar_picture.png';
+  final defaultIndividualCenterPictureUrlKey =
+      'default_individual_center_picture_url.png';
+
   int _currentIndex = 0;
   bool isSignIn = false;
   String userId = '';
   String nickname = '';
   String mailAddress = '';
   String avatarUrl = '';
+  String individualCenterPictureUrl = '';
 
   final List<Widget> _pages = [
     const Home(),
@@ -40,28 +45,64 @@ class _Content extends State<Content> {
   Future<void> _getUserInfo() async {
     try {
       final user = await Amplify.Auth.getCurrentUser();
-      final restOperation = Amplify.API.get(
-        'getUserInfo',
-        queryParameters: {'userId': user.userId},
-      );
-      final response = await restOperation.response;
-      final data = response.decodeBody();
-      Map<String, dynamic> userInfo = jsonDecode(data);
+      Map<String, dynamic> userInfo = await getUserInfo(user.userId);
+      var _avatarPicktureUrl = null;
+      var _individualCenterPictureUrl = null;
+
+      if (userInfo['individualCenterPictureKey'] == '' ||
+          userInfo['individualCenterPictureKey'] == null) {
+        await getS3UrlPublic(defaultIndividualCenterPictureUrlKey)
+            .then((value) {
+          _individualCenterPictureUrl = value;
+        });
+      } else {
+        await getS3UrlPublic(userInfo['individualCenterPictureKey'])
+            .then((value) {
+          _individualCenterPictureUrl = value;
+        });
+      }
+
+      if (userInfo['avatarKey'] == '' || userInfo['avatarKey'] == null) {
+        await getS3UrlPublic(defaultAvatarUrlKey).then((value) {
+          _avatarPicktureUrl = value;
+        });
+      } else {
+        await getS3UrlPublic(userInfo['avatarKey']).then((value) {
+          _avatarPicktureUrl = value;
+        });
+      }
       setState(() {
         isSignIn = true;
         userId = user.userId;
         nickname = userInfo['nickname'];
         mailAddress = userInfo['mailAddress'];
-        avatarUrl = userInfo['avatarUrl'];
+        avatarUrl = _avatarPicktureUrl;
+        individualCenterPictureUrl = _individualCenterPictureUrl;
         _pages[4] = User(
             isSignedIn: true,
             nickname: nickname,
             mailAddress: mailAddress,
-            avatarUrl: avatarUrl);
+            avatarUrl: avatarUrl,
+            individualCenterUrl: _individualCenterPictureUrl);
       });
     } on ApiException catch (e) {
       print('GET call failed: $e');
     }
+  }
+
+  Future<void> _getDefaultInfo() async {
+    var _individualCenterUrl = null;
+
+    await getS3UrlPublic(defaultIndividualCenterPictureUrlKey).then((value) {
+      _individualCenterUrl = value;
+    });
+
+    setState(() {
+      _pages[4] = User(
+        isSignedIn: false,
+        individualCenterUrl: _individualCenterUrl,
+      );
+    });
   }
 
   Future<void> _signOutHandle() async {
@@ -83,11 +124,7 @@ class _Content extends State<Content> {
     super.initState();
     isUserSignedIn().then((value) {
       if (value != true) {
-        setState(() {
-          _pages[4] = User(
-            isSignedIn: value,
-          );
-        });
+        _getDefaultInfo();
       } else {
         //获取当前登录用户信息
         _getUserInfo();
@@ -113,19 +150,11 @@ class _Content extends State<Content> {
                   accountEmail: Text(mailAddress),
                   currentAccountPicture:
                       CircleAvatar(backgroundImage: NetworkImage(avatarUrl)),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       color: Colors.yellow,
                       image: DecorationImage(
-                          image: NetworkImage(
-                              "https://www.itying.com/images/flutter/2.png"),
+                          image: NetworkImage(individualCenterPictureUrl),
                           fit: BoxFit.cover)),
-                  otherAccountsPictures: [
-                    Image.network(
-                        "https://www.itying.com/images/flutter/4.png"),
-                    Image.network(
-                        "https://www.itying.com/images/flutter/5.png"),
-                    Image.network("https://www.itying.com/images/flutter/6.png")
-                  ],
                 )
               : const UserAccountsDrawerHeader(
                   accountName: Text(''),
@@ -137,19 +166,21 @@ class _Content extends State<Content> {
                               "https://www.itying.com/images/flutter/2.png"),
                           fit: BoxFit.cover)),
                 ),
-          const ListTile(
-              title: Text('个人中心'),
+          if (isSignIn == true)
+            const ListTile(
+                title: Text('个人中心'),
+                leading: CircleAvatar(
+                  child: Icon(Icons.people),
+                )),
+          if (isSignIn == true) const Divider(),
+          if (isSignIn == true)
+            const ListTile(
+              title: Text("系统设置"),
               leading: CircleAvatar(
-                child: Icon(Icons.people),
-              )),
-          const Divider(),
-          const ListTile(
-            title: Text("系统设置"),
-            leading: CircleAvatar(
-              child: Icon(Icons.settings),
+                child: Icon(Icons.settings),
+              ),
             ),
-          ),
-          const Divider(),
+          if (isSignIn == true) const Divider(),
           isSignIn == true
               ? ListTileMoreCustomizable(
                   title: const Text(

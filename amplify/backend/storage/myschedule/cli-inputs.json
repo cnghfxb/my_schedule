@@ -1,0 +1,15 @@
+{
+  "resourceName": "myschedule",
+  "policyUUID": "638d300c",
+  "bucketName": "myschedule",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "groupAccess": {}
+}

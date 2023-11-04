@@ -1,5 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -18,7 +19,8 @@ Future<void> configureAmplify() async {
   // Auth plugin needed for IAM authorization mode, which is default for REST API.
   final auth = AmplifyAuthCognito();
   final api = AmplifyAPI();
-  await Amplify.addPlugins([api, auth]);
+  final storage = AmplifyStorageS3();
+  await Amplify.addPlugins([api, auth, storage]);
   try {
     await Amplify.configure(amplifyconfig);
   } on AmplifyAlreadyConfiguredException {

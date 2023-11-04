@@ -26,6 +26,7 @@ dependencies:
   amplify_auth_cognito: ^1.0.0
   amplify_authenticator: ^1.0.0
   amplify_api: ^1.0.0
+  amplify_storage_s3: ^1.0.0
   getwidget: ^2.0.4
 
   # The following adds the Cupertino Icons font to your application.
@@ -33,6 +34,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   list_tile_more_customizable: ^3.0.0
   flutter_easyloading: ^3.0.5
+  path_provider: ^2.1.1
+  image_picker: ^1.0.4
+  file_picker: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -54,5 +58,6 @@ flutter:
 
   assets:
     - assets/img/default_avatar.png
+    - assets/img/default_individual_center_picture_url.png
 
   

@@ -51,13 +51,18 @@
         "addRegistedUser": {
           "deploymentBucketName": "amplify-myschedule-dev-05626-deployment",
           "s3Key": "amplify-builds/addRegistedUser-30306853326279764169-build.zip"
+        },
+        "updateUserInfo": {
+          "deploymentBucketName": "amplify-myschedule-dev-05626-deployment",
+          "s3Key": "amplify-builds/updateUserInfo-313962345971484e314e-build.zip"
         }
       },
       "api": {
         "schedule": {}
       },
       "storage": {
-        "user": {}
+        "user": {},
+        "myschedule": {}
       }
     }
   }

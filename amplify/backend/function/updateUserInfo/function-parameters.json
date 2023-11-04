@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "auth": {
+      "myschedule42642247": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "storage": {
+      "user": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "myschedule": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

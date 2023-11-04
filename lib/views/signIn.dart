@@ -16,6 +16,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final String title = '来了，老弟！';
+
   /// 账号编辑控制器
   final TextEditingController _controllerUserName = TextEditingController();
 
@@ -76,8 +78,8 @@ class _SignInPageState extends State<SignInPage> {
           const SizedBox(
             height: 30,
           ),
-          const Text(
-            "来了，老弟！",
+          Text(
+            title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           Container(

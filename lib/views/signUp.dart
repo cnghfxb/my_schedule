@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:my_schedule/utils/auth.dart';
-import 'package:my_schedule/utils/colorTheme.dart';
+import 'package:my_schedule/utils/auth/auth.dart';
+import 'package:my_schedule/utils/common/throttle.dart';
+import 'package:my_schedule/utils/enum/gender.dart';
+import 'package:my_schedule/utils/theme/colorTheme.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:my_schedule/utils/throttle.dart';
 import 'package:my_schedule/views/signIn.dart';
 
 /// 注册界面
@@ -150,7 +151,8 @@ class _SignUpPageState extends State<SignUpPage> {
             body: HttpPayload.json({
               'userId': userId,
               'nickname': _controllerNickname.text,
-              'mailAddress': _controllerEmail.text
+              'mailAddress': _controllerEmail.text,
+              'gender': Gender.unknow.value
             }));
         await restOperation.response;
 

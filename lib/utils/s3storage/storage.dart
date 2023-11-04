@@ -1,7 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:my_schedule/utils/uuid.dart';
+import 'package:my_schedule/utils/common/uuid.dart';
 
 Future<String> getS3UrlPublic(String key) async {
   try {

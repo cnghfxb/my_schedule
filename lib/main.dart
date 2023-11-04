@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_schedule/router/router.dart';
-import 'package:my_schedule/utils/hideKeyboard.dart';
+import 'package:my_schedule/utils/common/hideKeyboard.dart';
 import 'package:my_schedule/views/content.dart';
 import 'amplifyconfiguration.dart';
 

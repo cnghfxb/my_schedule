@@ -1,10 +1,9 @@
-import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:my_schedule/utils/auth.dart';
-import 'package:my_schedule/utils/colorTheme.dart';
+import 'package:my_schedule/utils/auth/auth.dart';
+import 'package:my_schedule/utils/theme/colorTheme.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:my_schedule/utils/throttle.dart';
+import 'package:my_schedule/utils/common/throttle.dart';
 import 'package:my_schedule/views/content.dart';
 import 'package:my_schedule/views/signUp.dart';
 

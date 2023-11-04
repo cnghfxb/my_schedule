@@ -2,6 +2,7 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:my_schedule/utils/auth/handleUpdateAttributeResult.dart';
 
 Future<String> signUpUser(
     {required String username,
@@ -87,4 +88,19 @@ Future<void> deleteUser() async {
 Future<bool> isUserSignedIn() async {
   final result = await Amplify.Auth.fetchAuthSession();
   return result.isSignedIn;
+}
+
+//更新用户昵称
+Future<void> updateUserNickName({
+  required String nickNmae,
+}) async {
+  try {
+    final result = await Amplify.Auth.updateUserAttribute(
+      userAttributeKey: AuthUserAttributeKey.nickname,
+      value: nickNmae,
+    );
+    handleUpdateUserAttributeResult(result);
+  } on AuthException catch (e) {
+    safePrint('Error updating user attribute: ${e.message}');
+  }
 }

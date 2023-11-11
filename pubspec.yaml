@@ -38,6 +38,7 @@ dependencies:
   flutter_pickers: ^2.1.9
   tw_calendar: ^1.2.1
   table_calendar: ^3.0.9
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:

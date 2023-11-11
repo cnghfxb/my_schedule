@@ -27,21 +27,7 @@ class _HomeState extends State<Home> {
 
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
-    return kEvents[day] ??
-        [
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈'),
-          Event('哈哈')
-        ];
+    return kEvents[day] ?? [];
   }
 
   @override

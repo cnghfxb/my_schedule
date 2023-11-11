@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:getwidget/getwidget.dart';
@@ -17,6 +18,7 @@ class _AddSecheduleState extends State<AddSechedule> {
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
   List<Map<String, dynamic>> _scheduleTypeOptions = [];
+  Map<int, dynamic> _scheduleTypeKV = {1: '日程'};
   int _scheduleType = 1;
 
   List<GFRadioListTile> _scheduleTypeOptionsRander() {
@@ -27,7 +29,7 @@ class _AddSecheduleState extends State<AddSechedule> {
     for (var i = 0; i < _scheduleTypeOptions.length; i++) {
       list.add(GFRadioListTile(
           title: Text(_scheduleTypeOptions[i]['label']),
-          size: GFSize.MEDIUM,
+          size: GFSize.SMALL,
           activeBorderColor: primary,
           inactiveIcon: null,
           radioColor: primary,
@@ -52,6 +54,7 @@ class _AddSecheduleState extends State<AddSechedule> {
         map['value'] = list[i]['id'];
         map['label'] = list[i]['typeName'];
         newList.add(map);
+        _scheduleTypeKV[list[i]['id']] = list[i]['typeName'];
       }
       setState(() {
         _scheduleTypeOptions = newList;
@@ -105,19 +108,14 @@ class _AddSecheduleState extends State<AddSechedule> {
               },
             ),
             Container(
-                padding: EdgeInsets.all(10),
-                alignment: Alignment.topLeft,
-                child: Text(
-                  '类型',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                )),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
-              children: _scheduleTypeOptionsRander(),
+              padding: EdgeInsets.all(10),
+              child: ExpandablePanel(
+                header: Text('选择类型'),
+                collapsed: Text(_scheduleTypeKV[_scheduleType]),
+                expanded: Column(
+                  children: _scheduleTypeOptionsRander(),
+                ),
+              ),
             )
           ],
         ),

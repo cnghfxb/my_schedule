@@ -1,0 +1,10 @@
+{
+  "resourceName": "scheduleType",
+  "tableName": "scheduleType",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "number"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

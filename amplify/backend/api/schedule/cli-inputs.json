@@ -45,6 +45,25 @@
           "delete"
         ]
       }
+    },
+    "/getScheduleType": {
+      "name": "/getScheduleType",
+      "lambdaFunction": "getScheduleType",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
     }
   }
 }

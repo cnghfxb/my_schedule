@@ -10,7 +10,7 @@ import 'package:my_schedule/utils/s3storage/storage.dart';
 import 'package:my_schedule/views/Home.dart';
 import 'package:my_schedule/views/Setting.dart';
 import 'package:my_schedule/views/User.dart';
-import 'package:my_schedule/views/message.dart';
+import 'package:my_schedule/views/addSechedule.dart';
 import 'package:my_schedule/views/share.dart';
 import 'package:my_schedule/views/signIn.dart';
 
@@ -37,7 +37,7 @@ class _Content extends State<Content> {
   final List<Widget> _pages = [
     const Home(),
     const Share(),
-    const Message(),
+    const AddSechedule(),
     const Setting(),
     const User(isSignedIn: false)
   ];

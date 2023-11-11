@@ -25,6 +25,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "getScheduleType": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "getUserInfo": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -44,6 +51,22 @@ export type AmplifyDependentResourcesAttributes = {
     "myschedule": {
       "BucketName": "string",
       "Region": "string"
+    },
+    "schedule": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "StreamArn": "string"
+    },
+    "scheduleType": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "StreamArn": "string"
     },
     "user": {
       "Arn": "string",

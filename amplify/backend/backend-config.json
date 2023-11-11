@@ -25,6 +25,14 @@
           ],
           "category": "function",
           "resourceName": "updateUserInfo"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getScheduleType"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -72,6 +80,29 @@
           ],
           "category": "storage",
           "resourceName": "user"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getScheduleType": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "myschedule42642247"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "scheduleType"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -141,6 +172,22 @@
         }
       ]
     },
+    "AMPLIFY_function_getScheduleType_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getScheduleType"
+        }
+      ]
+    },
+    "AMPLIFY_function_getScheduleType_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getScheduleType"
+        }
+      ]
+    },
     "AMPLIFY_function_getUserInfo_deploymentBucketName": {
       "usedBy": [
         {
@@ -179,6 +226,14 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"
+    },
+    "schedule": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "scheduleType": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     },
     "user": {
       "providerPlugin": "awscloudformation",

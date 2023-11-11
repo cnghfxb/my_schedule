@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "auth": {
+      "myschedule42642247": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "storage": {
+      "scheduleType": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

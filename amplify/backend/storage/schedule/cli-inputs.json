@@ -1,0 +1,18 @@
+{
+  "resourceName": "schedule",
+  "tableName": "schedule",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "executeDate-index",
+      "partitionKey": {
+        "fieldName": "executeDate",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

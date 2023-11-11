@@ -326,14 +326,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.5"
-  flutter_lints:
-    dependency: "direct dev"
-    description:
-      name: flutter_lints
-      sha256: a25a15ebbdfc33ab1cd26c63a6ee519df92338a9c10f122adda92938253bef04
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.3"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -437,14 +429,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.8.1"
-  lints:
-    dependency: transitive
-    description:
-      name: lints
-      sha256: "0a217c6c989d21039f1498c3ed9f3ed71b354e69873f13a8dfc3c9fe76f1b452"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.1"
   list_tile_more_customizable:
     dependency: "direct main"
     description:
@@ -645,6 +629,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.4.1"
+  simple_gesture_detector:
+    dependency: transitive
+    description:
+      name: simple_gesture_detector
+      sha256: "86d08f85f1f58583b7b4b941d989f48ea6ce08c1724a1d10954a277c2ec36592"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -714,6 +706,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  table_calendar:
+    dependency: "direct main"
+    description:
+      name: table_calendar
+      sha256: "1e3521a3e6d3fc7f645a58b135ab663d458ab12504f1ea7f9b4b81d47086c478"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.9"
   term_glyph:
     dependency: transitive
     description:
@@ -738,6 +738,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.2"
+  tw_calendar:
+    dependency: "direct main"
+    description:
+      name: tw_calendar
+      sha256: "0ec579b5b44dee0efed74f70d1e475a05d9140028ba8b763b04eadfe0a908d01"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.2.1"
   typed_data:
     dependency: transitive
     description:

@@ -8,9 +8,10 @@ import 'package:my_schedule/router/router.dart';
 import 'package:my_schedule/utils/common/hideKeyboard.dart';
 import 'package:my_schedule/views/content.dart';
 import 'amplifyconfiguration.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(MyApp()));
   configureAmplify();
 }
 

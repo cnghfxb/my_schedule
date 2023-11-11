@@ -55,6 +55,10 @@
         "updateUserInfo": {
           "deploymentBucketName": "amplify-myschedule-dev-05626-deployment",
           "s3Key": "amplify-builds/updateUserInfo-313962345971484e314e-build.zip"
+        },
+        "getScheduleType": {
+          "deploymentBucketName": "amplify-myschedule-dev-05626-deployment",
+          "s3Key": "amplify-builds/getScheduleType-79696d62506c5a476f7a-build.zip"
         }
       },
       "api": {
@@ -62,7 +66,9 @@
       },
       "storage": {
         "user": {},
-        "myschedule": {}
+        "myschedule": {},
+        "schedule": {},
+        "scheduleType": {}
       }
     }
   }

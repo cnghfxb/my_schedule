@@ -26,3 +26,14 @@ Future<void> updateUserInfo(
     rethrow;
   }
 }
+
+//获取新建类型
+Future<List<dynamic>> getScheduleTypes() async {
+  try {
+    final restOperation = Amplify.API.get('getScheduleType');
+    final response = await restOperation.response;
+    return jsonDecode(response.decodeBody());
+  } catch (err) {
+    rethrow;
+  }
+}

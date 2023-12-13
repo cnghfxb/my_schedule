@@ -52,7 +52,7 @@ class _IndividualCenterState extends State<IndividualCenter> {
         if (userInfoController.individualCenterPictureKey.value !=
             Default.defaultIndividualCenterPictureUrlKey.label) {
           await removeFile(
-              key: userInfoController.individualCenterPictureKey.value!);
+              key: userInfoController.individualCenterPictureKey.value);
         }
         userInfoController.setIndividualCenterPictureUrl(newUrl);
         userInfoController.setIndividualCenterPictureKey(key);

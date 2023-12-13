@@ -7,6 +7,7 @@ import 'package:my_schedule/store/userInfo.dart';
 import 'package:my_schedule/utils/api/api.dart';
 import 'package:my_schedule/utils/auth/auth.dart';
 import 'package:my_schedule/utils/enum/default.dart';
+import 'package:my_schedule/utils/enum/gender.dart';
 import 'package:my_schedule/utils/theme/colorTheme.dart';
 import 'package:my_schedule/utils/s3storage/storage.dart';
 import 'package:my_schedule/views/Home.dart';
@@ -77,7 +78,7 @@ class _Content extends State<Content> {
       userInfoController.setUserId(user.userId);
       userInfoController.setNickname(userInfo['nickname']);
       userInfoController.setMailAddress(userInfo['mailAddress']);
-      userInfoController.setGender(userInfo['gender']);
+      userInfoController.setGender(userInfo['gender'] ?? Gender.unknow.value);
       userInfoController
           .setIndividualCenterPictureUrl(_individualCenterPictureUrl);
     } on ApiException catch (e) {

@@ -1,13 +1,13 @@
-import 'dart:convert';
-
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:list_tile_more_customizable/list_tile_more_customizable.dart';
+import 'package:my_schedule/store/userInfo.dart';
 import 'package:my_schedule/utils/api/api.dart';
+import 'package:my_schedule/utils/enum/default.dart';
 import 'package:my_schedule/utils/enum/gender.dart';
 import 'package:my_schedule/utils/theme/colorTheme.dart';
 import 'package:my_schedule/utils/dialog/renameDialog.dart';
@@ -25,77 +25,13 @@ class IndividualCenter extends StatefulWidget {
 /// attributes may be different depending on your app's configuration.
 
 class _IndividualCenterState extends State<IndividualCenter> {
-  final defaultIndividualCenterPictureUrlKey =
-      'default_individual_center_picture_url.png';
-  final defaultAvatarUrlKey = 'default_avatar_picture.png';
+  UserInfoController userInfoController =
+      Get.put<UserInfoController>(UserInfoController());
 
   List menuTitles = ['', '头像', '昵称', '邮箱', '性别', '修改密码'];
 
-  String? userId;
-  String? nickname;
-  String? mailAddress;
-  String? avatarPicktureUrl = '';
-  String? oldAvatarPictureKey = '';
-  String? individualCenterPictureUrl = '';
-  String? oldIndividualCenterPictureKey = '';
-  String? gengder = Gender.unknow.label;
-
   /// 昵称编辑控制器
   final TextEditingController _controllerNick = TextEditingController();
-
-  Future<void> _getUserInfo() async {
-    try {
-      EasyLoading.show(status: 'loading');
-      final user = await Amplify.Auth.getCurrentUser();
-      Map<String, dynamic> userInfo = await getUserInfo(user.userId);
-      var _oldIndividualCenterPictureKey = null;
-      var _individualCenterPictureUrl = null;
-
-      var _oldAvatarPictureKey = null;
-      var _avatarPicktureUrl = null;
-      if (userInfo['individualCenterPictureKey'] == '' ||
-          userInfo['individualCenterPictureKey'] == null) {
-        await getS3UrlPublic(defaultIndividualCenterPictureUrlKey)
-            .then((value) {
-          _individualCenterPictureUrl = value;
-          _oldIndividualCenterPictureKey = defaultIndividualCenterPictureUrlKey;
-        });
-      } else {
-        await getS3UrlPublic(userInfo['individualCenterPictureKey'])
-            .then((value) {
-          _individualCenterPictureUrl = value;
-          _oldIndividualCenterPictureKey =
-              userInfo['individualCenterPictureKey'];
-        });
-      }
-
-      if (userInfo['avatarKey'] == '' || userInfo['avatarKey'] == null) {
-        await getS3UrlPublic(defaultAvatarUrlKey).then((value) {
-          _avatarPicktureUrl = value;
-          _oldAvatarPictureKey = defaultAvatarUrlKey;
-        });
-      } else {
-        await getS3UrlPublic(userInfo['avatarKey']).then((value) {
-          _avatarPicktureUrl = value;
-          _oldAvatarPictureKey = userInfo['avatarKey'];
-        });
-      }
-      setState(() {
-        nickname = userInfo['nickname'];
-        mailAddress = userInfo['mailAddress'];
-        gengder = Gender.getLabel(userInfo['gender']) ?? Gender.unknow.label;
-        individualCenterPictureUrl = _individualCenterPictureUrl;
-        oldIndividualCenterPictureKey = _oldIndividualCenterPictureKey;
-        avatarPicktureUrl = _avatarPicktureUrl;
-        oldAvatarPictureKey = _oldAvatarPictureKey;
-        userId = user.userId;
-      });
-    } on ApiException catch (e) {
-      print('GET call failed: $e');
-    } finally {
-      EasyLoading.dismiss();
-    }
-  }
 
   Future<void> _updateBackgroundImg() async {
     try {
@@ -105,23 +41,22 @@ class _IndividualCenterState extends State<IndividualCenter> {
         final newUrl = await getS3UrlPublic(key);
         final restOperation = Amplify.API.post('updateUserInfo',
             body: HttpPayload.json({
-              'userId': userId,
+              'userId': userInfoController.userId.value,
               'updateColumn': 'individualCenterPictureKey',
               'value': key
             }));
         await restOperation.response;
-        await updateUserInfo(userId!, 'individualCenterPictureKey', key);
+        await updateUserInfo(
+            userInfoController.userId.value, 'individualCenterPictureKey', key);
         //从S3中删除被替换的文件
-        if (oldIndividualCenterPictureKey !=
-            defaultIndividualCenterPictureUrlKey) {
-          await removeFile(key: oldIndividualCenterPictureKey!);
+        if (userInfoController.individualCenterPictureKey.value !=
+            Default.defaultIndividualCenterPictureUrlKey.label) {
+          await removeFile(
+              key: userInfoController.individualCenterPictureKey.value);
         }
+        userInfoController.setIndividualCenterPictureUrl(newUrl);
+        userInfoController.setIndividualCenterPictureKey(key);
         EasyLoading.showSuccess('背景更新成功', duration: const Duration(seconds: 2));
-        setState(() {
-          individualCenterPictureUrl = newUrl;
-          //将旧的S3 key替换成新的
-          oldIndividualCenterPictureKey = key;
-        });
       }
     } catch (err) {
       print('update backgroud image error');
@@ -137,17 +72,15 @@ class _IndividualCenterState extends State<IndividualCenter> {
       final key = await uploadImage('user_avatar');
       if (key != '') {
         final newUrl = await getS3UrlPublic(key);
-        await updateUserInfo(userId!, 'avatarKey', key);
+        await updateUserInfo(userInfoController.userId.value, 'avatarKey', key);
         //从S3中删除被替换的文件
-        if (oldAvatarPictureKey != defaultAvatarUrlKey) {
-          await removeFile(key: oldAvatarPictureKey!);
+        if (userInfoController.avatarKey.value !=
+            Default.defaultAvatarUrlKey.label) {
+          await removeFile(key: userInfoController.avatarKey.value);
         }
+        userInfoController.setAvatar(newUrl);
+        userInfoController.setAvatarKey(key);
         EasyLoading.showSuccess('头像更新成功', duration: const Duration(seconds: 2));
-        setState(() {
-          avatarPicktureUrl = newUrl;
-          //将旧的S3 key替换成新的
-          oldAvatarPictureKey = key;
-        });
       }
     } catch (err) {
       print('update backgroud image error');
@@ -161,10 +94,9 @@ class _IndividualCenterState extends State<IndividualCenter> {
     try {
       EasyLoading.show(status: 'loading');
       final _nickName = _controllerNick.text;
-      await updateUserInfo(userId!, 'nickname', _controllerNick.text);
-      setState(() {
-        nickname = _nickName;
-      });
+      await updateUserInfo(
+          userInfoController.userId.value, 'nickname', _controllerNick.text);
+      userInfoController.setNickname(_nickName);
       EasyLoading.showSuccess('昵称更新成功', duration: const Duration(seconds: 2));
     } catch (err) {
       print(err);
@@ -177,10 +109,8 @@ class _IndividualCenterState extends State<IndividualCenter> {
   Future<void> _updateGender(int gender) async {
     try {
       EasyLoading.show(status: 'loading');
-      await updateUserInfo(userId!, 'gender', gender);
-      setState(() {
-        gengder = Gender.getLabel(gender);
-      });
+      await updateUserInfo(userInfoController.userId.value, 'gender', gender);
+      userInfoController.setGender(gender);
       EasyLoading.showSuccess('性别更新成功', duration: const Duration(seconds: 2));
     } catch (err) {
       print(err);
@@ -221,7 +151,6 @@ class _IndividualCenterState extends State<IndividualCenter> {
   @override
   void initState() {
     super.initState();
-    _getUserInfo();
   }
 
   @override
@@ -235,22 +164,22 @@ class _IndividualCenterState extends State<IndividualCenter> {
         body: SafeArea(
             child: ListView.separated(
                 itemBuilder: (context, index) {
-                  if (index == 0 && individualCenterPictureUrl != '') {
+                  if (index == 0) {
                     return InkWell(
-                      child: Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    NetworkImage(individualCenterPictureUrl!),
-                                fit: BoxFit.fill)),
-                      ),
+                      child: Obx(() => Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(userInfoController
+                                        .individualCenterPictureUrl.value),
+                                    fit: BoxFit.fill)),
+                          )),
                       onTap: () {
                         _updateBackgroundImg();
                       },
                     );
                   }
-                  if (index == 0 && individualCenterPictureUrl == '') {
+                  if (index == 0) {
                     return const SizedBox(
                       height: 200,
                       child: Center(
@@ -261,11 +190,10 @@ class _IndividualCenterState extends State<IndividualCenter> {
                   if (index == 1) {
                     return ListTileMoreCustomizable(
                       title: Text(menuTitles[index]),
-                      trailing: avatarPicktureUrl != ''
-                          ? CircleAvatar(
-                              backgroundImage: NetworkImage(avatarPicktureUrl!),
-                            )
-                          : const SizedBox(),
+                      trailing: Obx(() => CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                userInfoController.avatarUrl.value),
+                          )),
                       onTap: (_) {
                         _updateAvatar();
                       },
@@ -275,7 +203,8 @@ class _IndividualCenterState extends State<IndividualCenter> {
                   if (index == 2) {
                     return ListTileMoreCustomizable(
                       title: Text(menuTitles[index]),
-                      trailing: Text(nickname ?? ''),
+                      trailing:
+                          Obx(() => Text(userInfoController.nickname.value)),
                       onTap: (_) {
                         _showUpdateNickNameDialog();
                       },
@@ -285,14 +214,16 @@ class _IndividualCenterState extends State<IndividualCenter> {
                   if (index == 3) {
                     return ListTileMoreCustomizable(
                       title: Text(menuTitles[index]),
-                      trailing: Text(mailAddress ?? ''),
+                      trailing: Obx(() =>
+                          Text(userInfoController.mailAddress.value ?? '')),
                     );
                   }
 
                   if (index == 4) {
                     return ListTileMoreCustomizable(
                       title: Text(menuTitles[index]),
-                      trailing: Text(gengder!),
+                      trailing: Obx(() => Text(
+                          Gender.getLabel(userInfoController.gender.value))),
                       onTap: (_) {
                         _showGenderPicker(context);
                       },

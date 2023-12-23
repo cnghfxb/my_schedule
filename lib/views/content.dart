@@ -226,7 +226,7 @@ class _Content extends State<Content> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
           BottomNavigationBarItem(icon: Icon(Icons.category), label: '分类'),
-          BottomNavigationBarItem(icon: Icon(Icons.category), label: '消息'),
+          BottomNavigationBarItem(icon: Icon(Icons.category), label: '新建'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: '设置'),
           BottomNavigationBarItem(icon: Icon(Icons.people), label: '我的'),
         ],

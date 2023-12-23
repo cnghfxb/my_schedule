@@ -23,8 +23,8 @@ class _AddSecheduleState extends State<AddSechedule> {
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
-  Map<int, dynamic> _scheduleTypeKV = {1: '日程'};
   int _scheduleType = 1;
+  String _scheduleTypeLabel = '';
 
   List<GFRadioListTile> _scheduleTypeOptionsRander() {
     // ignore: invalid_use_of_protected_member
@@ -42,9 +42,10 @@ class _AddSecheduleState extends State<AddSechedule> {
           value: scheduleAddController.typeOptions[i]['value'],
           groupValue: _scheduleType,
           onChanged: (val) {
-            print(scheduleAddController.typeOptions);
             setState(() {
               _scheduleType = val;
+              _scheduleTypeLabel =
+                  scheduleAddController.typeOptions[i]['label'];
             });
           }));
     }
@@ -61,7 +62,6 @@ class _AddSecheduleState extends State<AddSechedule> {
         map['value'] = list[i]['id'];
         map['label'] = list[i]['typeName'];
         newList.add(map);
-        _scheduleTypeKV[list[i]['id']] = list[i]['typeName'];
       }
       scheduleAddController.setTypeOptions(newList);
     } catch (err) {
@@ -118,7 +118,7 @@ class _AddSecheduleState extends State<AddSechedule> {
               padding: EdgeInsets.all(10),
               child: ExpandablePanel(
                 header: Text('选择类型'),
-                collapsed: Text(_scheduleTypeKV[_scheduleType]),
+                collapsed: Text(_scheduleTypeLabel),
                 expanded: Obx(() => Column(
                       children: _scheduleTypeOptionsRander(),
                     )),
